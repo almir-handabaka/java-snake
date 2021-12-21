@@ -26,7 +26,7 @@ public class Snake {
 	 * @param n - dimenzije polja
 	 * Prazno polje je 0, tijelo zmije predstavlja broj 1, 
 	 */
-	Snake(int n){
+	public Snake(int n){
 		this.n = n;
 		matricaStanja = new int[n][n];
 		for(int i = 0;i<n;i++) {
@@ -38,6 +38,7 @@ public class Snake {
 		/* U pocetku igre zmija uvijek krece sa iste pozicije i duzina iznosi 4 polja
 		 *  x = kolona j   y = red i
 		 */
+		smjer = "r";
 		
 		tijeloZmije = new LinkedList<Pozicija>();
 		for(int i = 5;i>=0;i--) {
@@ -115,7 +116,7 @@ public class Snake {
 			tijeloZmije.removeLast();
 		}
 		
-		
+		osvjeziMatricuStanja();
 	}
 	
 	public void osvjeziMatricuStanja() {
@@ -150,6 +151,14 @@ public class Snake {
 			}
 		}
 		
+	}
+	
+	public void setSmjer(String smjer) {
+		this.smjer = smjer;
+	}
+	
+	public int getVrijednostStanja(int i, int j) {
+		return matricaStanja[i][j];
 	}
 	
 	
