@@ -20,8 +20,8 @@ public class Snake {
 	public final static int brojZatijeloZmije = 1;
 	public final static int brojZajabuku = 2;
 	
-	private LinkedList<Pozicija> tijeloZmije; // pozicija zmije unutar matrice stanja
 	private int matricaStanja[][]; // stanje polja
+	private LinkedList<Pozicija> tijeloZmije; // pozicija zmije unutar matrice stanja
 	private int n; // dimenzija matrice nxn
 	private int smjer;
 	private boolean kraj;
@@ -59,15 +59,6 @@ public class Snake {
 		
 	}
 	
-	public void ispisiStanjeMatrice() {
-		for(int i = 0;i<n;i++) {
-			for(int j = 0;j<n;j++) {
-				System.out.print(matricaStanja[i][j]+ " ");
-			}
-			System.out.println();
-		}
-	}
-	
 	
 	
 	// provjeravamo o kojem se smeru radi i pomjeramo zmiju
@@ -76,7 +67,6 @@ public class Snake {
 	public void pomjeriZmiju() {
 		int i = tijeloZmije.getFirst().getI();
 		int j = tijeloZmije.getFirst().getJ();
-		
 		
 		if(smjer == PRAVAC_GORE) {
 			if(i - 1 < 0) {
@@ -109,7 +99,7 @@ public class Snake {
 			}
 			
 		}
-		System.out.println(i + " " + j);
+		
 		tijeloZmije.addFirst(new Pozicija(i,j));
 		if(jabuka.getI() == i && jabuka.getJ() == j) {
 			generisiJabuku();
@@ -141,18 +131,22 @@ public class Snake {
 	// jedini uslov je da jabuka bude unutar granica
 	// i da ne bude vec na tijelu zmije
 	private void generisiJabuku() {
+		boolean nova_jabuka_generisana;
 		Random rn = new Random();
 		int i, j;
 		while(true) {
+			nova_jabuka_generisana = true;
 			i = 0 + rn.nextInt(n);
 			j = 0 + rn.nextInt(n);
 			for(int k = 0;k<tijeloZmije.size();k++) {
-				if( tijeloZmije.get(k).getI() != i && tijeloZmije.get(k).getJ()  != j) {
-					jabuka = new Pozicija(i,j);
-					System.out.println(i +" " +j);
-					return;
+				if(tijeloZmije.get(k).getI() == i && tijeloZmije.get(k).getJ()  == j) {
+					nova_jabuka_generisana = false;
 				}
 					
+			}
+			if(nova_jabuka_generisana) {
+				jabuka = new Pozicija(i,j);
+				return;
 			}
 		}
 		
@@ -179,6 +173,14 @@ public class Snake {
 	
 	public int getVrijednostStanja(int i, int j) {
 		return matricaStanja[i][j];
+	}
+	
+	public int[][] getTrenutnoStanje() {
+		return matricaStanja;
+	}
+
+	public int getTrenutniSmjer() {
+		return smjer;
 	}
 	
 	public boolean krajIgre() {

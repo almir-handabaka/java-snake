@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Timer;
@@ -26,7 +25,6 @@ public class MojPanel extends JPanel{
 			for(int j = 0;j<n;j++) {
 				tabelaDugmadi[i][j] = new JButton();
 				add(tabelaDugmadi[i][j]);
-				tabelaDugmadi[i][j].setBackground(Color.RED);
 				tabelaDugmadi[i][j].addKeyListener(new MojKeyListener());
 				tabelaDugmadi[i][j].setBackground(getBoja(snake.getVrijednostStanja(i, j)));
 			}
@@ -42,7 +40,7 @@ public class MojPanel extends JPanel{
 		if (boja == 1) {
 			return Color.GREEN;
 		}
-		if (boja == 2) {
+		else if (boja == 2) {
 			return Color.RED;
 		}
 		return Color.BLACK;
@@ -72,19 +70,19 @@ public class MojPanel extends JPanel{
 			System.out.println("keyPressed: " + arg0.getExtendedKeyCode());
 			if (arg0.getExtendedKeyCode() == 39) {
 				snake.setSmjer(Snake.PRAVAC_DESNO);
-				System.out.println("desno");
+				//System.out.println("desno");
 			}
 			else if (arg0.getExtendedKeyCode() == 37) {
 				snake.setSmjer(Snake.PRAVAC_LIJEVO);
-				System.out.println("lijevo");
+				//System.out.println("lijevo");
 			}
 			else if (arg0.getExtendedKeyCode() == 40) {
 				snake.setSmjer(Snake.PRAVAC_DOLE);
-				System.out.println("dolje");
+				//System.out.println("dolje");
 			}
 			else if (arg0.getExtendedKeyCode() == 38) {
 				snake.setSmjer(Snake.PRAVAC_GORE);
-				System.out.println("gore");
+				//System.out.println("gore");
 			}
 			
 		}
@@ -101,7 +99,6 @@ public class MojPanel extends JPanel{
 
 		@Override
 		public void run() {
-			System.out.println("RUN");
 			snake.pomjeriZmiju();
 			osvjeziStanjeTabele();
 			if (snake.krajIgre()) {
