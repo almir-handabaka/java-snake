@@ -34,7 +34,7 @@ public class MojPanel extends JPanel{
 		
 		MojTimerTask mtt = new MojTimerTask();
 		Timer timer = new Timer(true);
-		timer.scheduleAtFixedRate(mtt, 0, 300);
+		timer.scheduleAtFixedRate(mtt, 0, 200);
 		
 	}
 	
@@ -71,19 +71,19 @@ public class MojPanel extends JPanel{
 			// TODO Auto-generated method stub
 			System.out.println("keyPressed: " + arg0.getExtendedKeyCode());
 			if (arg0.getExtendedKeyCode() == 39) {
-				snake.setSmjer("r");
+				snake.setSmjer(Snake.PRAVAC_DESNO);
 				System.out.println("desno");
 			}
 			else if (arg0.getExtendedKeyCode() == 37) {
-				snake.setSmjer("l");
+				snake.setSmjer(Snake.PRAVAC_LIJEVO);
 				System.out.println("lijevo");
 			}
 			else if (arg0.getExtendedKeyCode() == 40) {
-				snake.setSmjer("d");
+				snake.setSmjer(Snake.PRAVAC_DOLE);
 				System.out.println("dolje");
 			}
 			else if (arg0.getExtendedKeyCode() == 38) {
-				snake.setSmjer("u");
+				snake.setSmjer(Snake.PRAVAC_GORE);
 				System.out.println("gore");
 			}
 			
@@ -104,7 +104,12 @@ public class MojPanel extends JPanel{
 			System.out.println("RUN");
 			snake.pomjeriZmiju();
 			osvjeziStanjeTabele();
+			if (snake.krajIgre()) {
+				cancel();
+				System.out.println("KRAJ IGRE");
+			}
 		}
+		
 		
 	}
 }
