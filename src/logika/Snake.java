@@ -1,24 +1,29 @@
 package logika;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.Random;
+import java.util.Vector;
 
 
 
 public class Snake {
-	public final static int PRAVAC_DOLE = 0;
-	public final static int PRAVAC_LIJEVO = 1;
-	public final static int PRAVAC_DESNO = 2;
-	public final static int PRAVAC_GORE = 3;
+	public final static int pravac_dolje = 0;
+	public final static int pravac_lijevo = 1;
+	public final static int pravac_desno = 2;
+	public final static int pravac_gore = 3;
+	
 	
 	/*
 	 * Oznake za vrijednosti polja, 0 za prazno polje, 1 ako se na polju nalazi zmija
 	 * i 2 ako je u pitanju jabuka.
 	 */
 	
-	public final static int brojZapraznoPolje = 0;
-	public final static int brojZatijeloZmije = 1;
-	public final static int brojZajabuku = 2;
+	public final static int oznaka_prazno_polje = 0;
+	public final static int oznaka_tijelo_zmije = 1;
+	public final static int oznaka_jabuka = 2;
+	public final static int oznaka_prepreka = 3;
+	
+	public final static int pocetna_duzina_zmije = 5;
+	public final static int max_broj_prepreka = 5;
 	
 	private int matricaStanja[][]; // stanje polja
 	private LinkedList<Pozicija> tijeloZmije; // pozicija zmije unutar matrice stanja
@@ -26,6 +31,8 @@ public class Snake {
 	private int smjer;
 	private boolean kraj;
 	private Pozicija jabuka;
+	//private Vector<Vector<Pozicija>> prepreke;
+	// prepreke samo dodavati u matricuStanja
 	
 	/*
 	 * Konstruktor sa jednim parametrom za kreiranje igre.
@@ -38,24 +45,64 @@ public class Snake {
 		matricaStanja = new int[n][n];
 		for(int i = 0;i<n;i++) {
 			for(int j = 0;j<n;j++) {
-				matricaStanja[i][j] = brojZapraznoPolje;
+				matricaStanja[i][j] = oznaka_prazno_polje;
 			}
 		}
 		
 		/* U pocetku igre zmija uvijek krece sa iste pozicije i duzina iznosi 4 polja
 		 *  x = kolona j   y = red i
 		 */
-		smjer = PRAVAC_DESNO;
+		smjer = pravac_desno;
 		
 		tijeloZmije = new LinkedList<Pozicija>();
-		for(int i = 5;i>=0;i--) {
+		for(int i = pocetna_duzina_zmije;i>=0;i--) {
 			tijeloZmije.add(new Pozicija(n/2, i));
-			matricaStanja[n/2][i] = brojZatijeloZmije;
+			matricaStanja[n/2][i] = oznaka_tijelo_zmije;
 		}
 		
 		kraj = false;
+		generisiPrepreke();
 		generisiJabuku();
-		matricaStanja[jabuka.getI()][jabuka.getJ()] = brojZajabuku;
+		matricaStanja[jabuka.getI()][jabuka.getJ()] = oznaka_jabuka;
+		/*
+		 * System.out.println("Igra generisana"); for(int i =
+		 * 0;i<matricaStanja.length;i++) { for(int j = 0;j<matricaStanja[0].length;j++)
+		 * { System.out.print(matricaStanja[i][j] + " ");
+		 * 
+		 * } System.out.println(); }
+		 */
+	}
+	/*
+	 * Nasumicno dodajemo prepreke u tabelu stanja.
+	 */
+	private void generisiPrepreke() {
+		
+		// pravac_gore, pravac_desno, pravac_dolje, pravac_lijevo
+		Random rn = new Random();
+		int broj_prepreka = 1 + rn.nextInt(max_broj_prepreka);
+		int duzina_prepreke;
+		while(broj_prepreka != 0) {
+			System.out.println("Broj prepreka" + broj_prepreka);
+			broj_prepreka--;
+			duzina_prepreke = 1 + rn.nextInt(max_broj_prepreka);
+			
+			int smjer_prepreke = 0 + rn.nextInt(3);
+			System.out.println("Smjer prepreke " + smjer_prepreke);
+			int pocetak_x = 0 + rn.nextInt(this.n);
+			int pocetak_y = 0 + rn.nextInt(this.n);
+			matricaStanja[pocetak_x][pocetak_y] = oznaka_prepreka;
+			while(duzina_prepreke > 0) {
+				
+				Pozicija tmp_poz = new Pozicija(pocetak_x,pocetak_y);
+				tmp_poz.pomjeriKoordinate(n, n, smjer_prepreke);
+				pocetak_x = tmp_poz.getI();
+				pocetak_y = tmp_poz.getJ();
+				matricaStanja[pocetak_x][pocetak_y] = oznaka_prepreka;
+				duzina_prepreke--;
+				System.out.println("Koordinate "+ pocetak_x + " " +pocetak_y);
+			}
+		}
+		
 		
 	}
 	
@@ -65,10 +112,11 @@ public class Snake {
 	// ako smo naisli na prepreku kraj igre
 	// ako na jabuku prosirimo se 
 	public void pomjeriZmiju() {
+		//System.out.println(smjer);
 		int i = tijeloZmije.getFirst().getI();
 		int j = tijeloZmije.getFirst().getJ();
 		
-		if(smjer == PRAVAC_GORE) {
+		if(smjer == pravac_gore) {
 			if(i - 1 < 0) {
 				i += n-1;
 			}
@@ -78,18 +126,18 @@ public class Snake {
 			
 			
 		}
-		else if(smjer == PRAVAC_DOLE) {
+		else if(smjer == pravac_dolje) {
 			//i++;
 			i = (i+1)%n;
 			
 		}
-		else if(smjer == PRAVAC_DESNO) {
+		else if(smjer == pravac_desno) {
 			//j++;
 			j = (j+1)%n;
 			
 			
 		}
-		else if(smjer == PRAVAC_LIJEVO) {
+		else if(smjer == pravac_lijevo) {
 			//j--;
 			if(j - 1 < 0) {
 				j += n-1;
@@ -104,7 +152,7 @@ public class Snake {
 		if(jabuka.getI() == i && jabuka.getJ() == j) {
 			generisiJabuku();
 		}
-		else if(matricaStanja[i][j] == 1) {
+		else if(matricaStanja[i][j] == oznaka_tijelo_zmije || matricaStanja[i][j] == oznaka_prepreka) {
 			kraj = true;
 		}
 		else {
@@ -117,14 +165,19 @@ public class Snake {
 	public void osvjeziMatricuStanja() {
 		for(int i = 0;i<n;i++) {
 			for(int j = 0;j<n;j++) {
-				matricaStanja[i][j] = brojZapraznoPolje;
+				if(matricaStanja[i][j] == oznaka_prepreka) {
+					matricaStanja[i][j] = oznaka_prepreka;
+				}else {
+					matricaStanja[i][j] = oznaka_prazno_polje;
+				}
+				
 			}
 		}
 		
 		for(int i = 0;i<tijeloZmije.size();i++) {
-			matricaStanja[tijeloZmije.get(i).getI()][tijeloZmije.get(i).getJ()] = brojZatijeloZmije;
+			matricaStanja[tijeloZmije.get(i).getI()][tijeloZmije.get(i).getJ()] = oznaka_tijelo_zmije;
 		}
-		matricaStanja[jabuka.getI()][jabuka.getJ()] = brojZajabuku;
+		matricaStanja[jabuka.getI()][jabuka.getJ()] = oznaka_jabuka;
 		
 	}
 	
@@ -151,24 +204,43 @@ public class Snake {
 		}
 		
 	}
+	
 	/*
 	 * U sluèaju da korisnik pokuša da se vrati u pravcu iz kojeg je došao (udario bi u 
 	 * tijelo zmije).
 	 */
+	
 	public void setSmjer(int smjer) {
-		if(smjer == PRAVAC_DOLE && this.smjer == PRAVAC_GORE) {
-			return;
+		
+		int smjerovi[] = {pravac_gore, pravac_desno, pravac_dolje, pravac_lijevo};
+		
+		int tmp_index = 0;
+		for(int i = 0;i<smjerovi.length;i++) {
+			if(this.smjer == smjerovi[i]) {
+				tmp_index = i;
+				break;
+			}
 		}
-		else if(smjer == PRAVAC_GORE && this.smjer == PRAVAC_DOLE) {
-			return;
+		
+		if(smjer == pravac_desno) {
+			if(tmp_index == smjerovi.length - 1) {
+				tmp_index = 0;
+			}
+			else {
+				tmp_index++;
+			}
 		}
-		else if(smjer == PRAVAC_DESNO && this.smjer == PRAVAC_LIJEVO) {
-			return;
+		
+		else if(smjer == pravac_lijevo) {
+			if(tmp_index == 0) {
+				tmp_index = smjerovi.length - 1;
+			}
+			else {
+				tmp_index--;
+			}
 		}
-		else if(smjer == PRAVAC_LIJEVO && this.smjer == PRAVAC_DESNO) {
-			return;
-		}
-		this.smjer = smjer;
+		
+		this.smjer = smjerovi[tmp_index];
 	}
 	
 	public int getVrijednostStanja(int i, int j) {

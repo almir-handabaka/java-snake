@@ -1,5 +1,6 @@
 package konzola;
 
+import java.util.Arrays;
 import java.util.Scanner;
 import logika.Snake;
 
@@ -11,7 +12,7 @@ import logika.Snake;
 
 public class IgrajSnake {
 	public static void main(String[] args) {
-		System.out.println("Igrica tetris, potezi su:\n" +
+		System.out.println("Igrica snake, potezi su:\n" +
 				"\t4 - lijevo\n" +
 				"\t6 - desno\n" +
 				"\t8 - gore\n" +
@@ -37,16 +38,20 @@ public class IgrajSnake {
 			e.printStackTrace();
 		}
 		if(potez == 4) {
-			return snake.PRAVAC_LIJEVO;
+			System.out.println("lijevo");
+			return snake.pravac_lijevo;
 		}
 		else if(potez == 6){
-			return snake.PRAVAC_DESNO;
+			System.out.println("desno");
+			return snake.pravac_desno;
 		}
 		else if(potez == 8){
-			return snake.PRAVAC_DOLE;
+			System.out.println("gore");
+			return snake.pravac_dolje;
 		}
 		else if(potez == 2){
-			return snake.PRAVAC_GORE;
+			System.out.println("dole");
+			return snake.pravac_gore;
 		}
 		
 		return potez;
@@ -54,21 +59,23 @@ public class IgrajSnake {
 
 	private static String pripremiTabeluStanja(int[][] vratiTrenutnoStanje, Snake snake) {
 		String stanje = "";
+		
 		for (int i = vratiTrenutnoStanje.length - 1; i >= 0; i--) {
+			System.out.println(Arrays.toString(vratiTrenutnoStanje[i]));
 			for (int j = 0; j < vratiTrenutnoStanje[i].length; j++) {
-				if(vratiTrenutnoStanje[i][j] == snake.brojZapraznoPolje) {
+				if(vratiTrenutnoStanje[i][j] == snake.oznaka_prazno_polje) {
 					stanje += "-";
 				}
-				else if(vratiTrenutnoStanje[i][j] == snake.brojZatijeloZmije) {
+				else if(vratiTrenutnoStanje[i][j] == snake.oznaka_tijelo_zmije) {
 					stanje += "+";
 				}
-				else if(vratiTrenutnoStanje[i][j] == snake.brojZajabuku) {
+				else if(vratiTrenutnoStanje[i][j] == snake.oznaka_jabuka) {
 					stanje += "0";
 				}
 			}
 			stanje += "\n";
 		}
-		return stanje;
+		return "";
 	}
 	
 }
