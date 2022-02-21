@@ -75,11 +75,11 @@ public class MojPanel extends JPanel{
 			// TODO Auto-generated method stub
 			System.out.println("keyPressed: " + arg0.getExtendedKeyCode());
 			if (arg0.getExtendedKeyCode() == 39) {
-				snake.setSmjer(Snake.pravac_desno);
+				snake.setSmjer(snake.getSkreniDesno());
 				//System.out.println("desno");
 			}
 			else if (arg0.getExtendedKeyCode() == 37) {
-				snake.setSmjer(Snake.pravac_lijevo);
+				snake.setSmjer(snake.getSkreniLijevo());
 				//System.out.println("lijevo");
 			}
 			/*
