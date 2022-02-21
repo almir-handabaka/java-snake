@@ -37,8 +37,9 @@ public class Snake {
 	private int trenutni_bodovi_hrane; // koliko hrana na polju nosi bodova
 	private int povecati_tijelo; // tijelo zmije povecavamo za neki broj
 	boolean obrnuti_kontrole;
+	int trajanje_hrane;
 	
-	Hashtable<String, Integer> hrana = new Hashtable<String, Integer>();
+	public static Hashtable<String, Integer> hrana;
 	
 	//private Vector<Vector<Pozicija>> prepreke;
 	// prepreke samo dodavati u matricuStanja
@@ -66,6 +67,9 @@ public class Snake {
 		bodovi = 0;
 		povecati_tijelo = 0;
 		obrnuti_kontrole = false;
+		trajanje_hrane = 0;
+		hrana = new Hashtable<String, Integer>();
+		
 		
 		hrana.put("tip_1", 1); // obicna
 		hrana.put("tip_2", 3); // povecaj vise od 1 
@@ -171,6 +175,9 @@ public class Snake {
 			pojediHranu();
 			generisiJabuku();
 		}
+		else if(trajanje_hrane == 0) {
+			generisiJabuku();
+		}
 		// boolean daLiJePrepreka
 		else if(daLiJePrepreka(i,j)) {
 			kraj = true;
@@ -194,7 +201,7 @@ public class Snake {
 			ukloniSaKrajaZmije();
 		}
 		
-		
+		trajanje_hrane--;
 		dodajNaPocetakZmije(i,j);
 		osvjeziMatricuStanja();
 	}
@@ -262,24 +269,28 @@ public class Snake {
 		
 		int random = rn.nextInt(100);
 		
+		trajanje_hrane = 25 + rn.nextInt(20);
+		System.out.println("Trajanje hrane je " + trajanje_hrane + " pomjeranja");
+		
 		if(random <= 5) {
 			// da zamijeni lijevo - desno kontrole (na odreðeni period ili za 
 			//stalno)
-			System.out.println("Obrtanje kontrola");
+			System.out.println("Generisana hrana obrtanja kontrola");
 			trenutni_bodovi_hrane = hrana.get("tip_4");
 		}
 		else if(random <= 15) {
-			System.out.println("Smanji zmiju");
+			System.out.println("Generisana hrana smanji zmiju");
 			// da smanji zmiju
 			trenutni_bodovi_hrane = hrana.get("tip_3");
 		}
 		else if(random <= 25) {
-			System.out.println("Povecaj za 3");
+			System.out.println("Generisana hrana povecaj za 3");
 			// da zmiju poveæa više od jednog èlanka
 			trenutni_bodovi_hrane = hrana.get("tip_2");
 		}
 		else {
-			System.out.println("Obicna hrana");
+			System.out.println("Generisana obicna hrana");
+			
 			// obicna hrana
 			trenutni_bodovi_hrane = hrana.get("tip_1");
 		}
@@ -371,4 +382,7 @@ public class Snake {
 		return skreni_lijevo;
 	}
 	
+	public int getTrenutneBodove() {
+		return trenutni_bodovi_hrane;
+	}
 }

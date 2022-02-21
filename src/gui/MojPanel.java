@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -27,6 +28,8 @@ public class MojPanel extends JPanel{
 				add(tabelaDugmadi[i][j]);
 				tabelaDugmadi[i][j].addKeyListener(new MojKeyListener());
 				tabelaDugmadi[i][j].setBackground(getBoja(snake.getVrijednostStanja(i, j)));
+				
+				tabelaDugmadi[i][j].setPreferredSize(new Dimension(30, 30));
 			}
 		}
 		
@@ -41,7 +44,19 @@ public class MojPanel extends JPanel{
 			return Color.GREEN;
 		}
 		else if (boja == 2) {
-			return Color.RED;
+			if(snake.hrana.get("tip_1") == snake.getTrenutneBodove()) {
+				return Color.PINK;
+			}
+			else if(snake.hrana.get("tip_2") == snake.getTrenutneBodove()) {
+				return Color.CYAN;
+			}
+			else if(snake.hrana.get("tip_3") == snake.getTrenutneBodove()) {
+				return Color.LIGHT_GRAY;
+			}
+			else if(snake.hrana.get("tip_4") == snake.getTrenutneBodove()) {
+				return Color.RED;
+			}
+			
 		}
 		else if(boja == 3) {
 			return Color.YELLOW;
