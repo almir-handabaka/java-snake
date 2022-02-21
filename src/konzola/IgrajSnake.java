@@ -1,27 +1,35 @@
 package konzola;
 
-import java.util.Arrays;
 import java.util.Scanner;
 import logika.Snake;
 
 /**
+ * Klasa za pokretanje Snake igre unutar konzole
+ * 
  * @author Almir Handabaka
  *
  */
 
 
 public class IgrajSnake {
+	
+	/**
+	 * Uèita poteze od igraèa i pokrene igru i ispisuje stanje polja
+	 * @param args string args
+	 */
+	
 	public static void main(String[] args) {
 		System.out.println("Igrica snake, potezi su:\n" +
 				"\t4 - lijevo\n" +
 				"\t6 - desno\n" +
-				"\t8 - gore\n" +
-				"\t2 - dole\t");
+				"\t5 - ništa\n");
 		Snake snake = new Snake(20);
 		System.out.println(pripremiTabeluStanja(snake.getTrenutnoStanje(), snake));
 		while (!snake.krajIgre()) {
 			int potez = ucitajPotez(snake);
-			snake.setSmjer(potez);
+			if(potez != 5) {
+				snake.setSmjer(potez);
+			}
 			snake.pomjeriZmiju();
 			System.out.println(pripremiTabeluStanja(snake.getTrenutnoStanje(), snake));
 			
@@ -29,6 +37,10 @@ public class IgrajSnake {
 		System.out.println("Kraj igre!");
 	}
 	
+	
+	/**
+	 * Uèita potez od igraèa
+	 */
 	private static int ucitajPotez(Snake snake) {
 		Scanner sc = new Scanner(System.in);
 		int potez = snake.getTrenutniSmjer();
@@ -38,44 +50,42 @@ public class IgrajSnake {
 			e.printStackTrace();
 		}
 		if(potez == 4) {
-			System.out.println("lijevo");
-			return snake.pravac_lijevo;
+			return snake.skreni_lijevo;
 		}
 		else if(potez == 6){
-			System.out.println("desno");
-			return snake.pravac_desno;
-		}
-		else if(potez == 8){
-			System.out.println("gore");
-			return snake.pravac_dolje;
-		}
-		else if(potez == 2){
-			System.out.println("dole");
-			return snake.pravac_gore;
+			return snake.skreni_desno;
 		}
 		
-		return potez;
+		return 5;
 	}
-
-	private static String pripremiTabeluStanja(int[][] vratiTrenutnoStanje, Snake snake) {
+	
+	
+	/**
+	 * Priprema trenutnog stanja u polju za igru za ispis igraèu
+	 */
+	private static String pripremiTabeluStanja(int[][] matrica_stanja, Snake snake) {
 		String stanje = "";
 		
-		for (int i = vratiTrenutnoStanje.length - 1; i >= 0; i--) {
-			System.out.println(Arrays.toString(vratiTrenutnoStanje[i]));
-			for (int j = 0; j < vratiTrenutnoStanje[i].length; j++) {
-				if(vratiTrenutnoStanje[i][j] == snake.oznaka_prazno_polje) {
-					stanje += "-";
+		
+		for (int i = 0; i < matrica_stanja.length; i++) {
+			//System.out.println(Arrays.toString(vratiTrenutnoStanje[i]));
+			for (int j = 0; j < matrica_stanja[i].length; j++) {
+				if(matrica_stanja[i][j] == snake.oznaka_prazno_polje) {
+					stanje += ". ";
 				}
-				else if(vratiTrenutnoStanje[i][j] == snake.oznaka_tijelo_zmije) {
-					stanje += "+";
+				else if(matrica_stanja[i][j] == snake.oznaka_tijelo_zmije) {
+					stanje += "- ";
 				}
-				else if(vratiTrenutnoStanje[i][j] == snake.oznaka_jabuka) {
-					stanje += "0";
+				else if(matrica_stanja[i][j] == snake.oznaka_jabuka) {
+					stanje += "+ ";
+				}
+				else if(matrica_stanja[i][j] == snake.oznaka_prepreka) {
+					stanje += "! ";
 				}
 			}
 			stanje += "\n";
 		}
-		return "";
+		return stanje;
 	}
 	
 }

@@ -13,12 +13,26 @@ import javax.swing.JPanel;
 
 import logika.Snake;
 
+
+
+/**
+ * Klasa za implementaciju GUI-a za igru Snake
+ * 
+ * @author Almir Handabaka
+ *
+ */
 public class MojPanel extends JPanel{
 	private Snake snake;
 	//private JPanel prikazTabele;
 	private JButton tabelaDugmadi[][];
 	
-	public MojPanel(int n, int m){
+	/**
+	 * Konstruktor sa jednim parametrom koji namješta polje za igricu
+	 * 
+	 * @param n velièina polja za igru - generiše polje velièine n x n
+	 * 
+	 */
+	public MojPanel(int n){
 		snake = new Snake(n);
 		setLayout(new GridLayout(n,n));
 		tabelaDugmadi = new JButton[n][n];
@@ -39,6 +53,9 @@ public class MojPanel extends JPanel{
 		
 	}
 	
+	/**
+	 * Vrati boju ovisno od elementa polja
+	 */
 	private Color getBoja(int boja) {
 		if (boja == 1) {
 			return Color.GREEN;
@@ -64,6 +81,10 @@ public class MojPanel extends JPanel{
 		return Color.BLACK;
 	}
 	
+	/**
+	 * Osvježi trenutno stanje igre, promjeni boju polja ovisno od stanja
+	 * 
+	 */
 	public void osvjeziStanjeTabele() {
 		for(int i = 0;i<tabelaDugmadi.length;i++) {
 			for(int j = 0;j<tabelaDugmadi[0].length;j++) {
@@ -76,6 +97,10 @@ public class MojPanel extends JPanel{
 		//System.out.println("-----------------");
 	}
 	
+	/**
+	 * Implementacija KeyListenera za komande
+	 * 
+	 */
 	class MojKeyListener implements KeyListener {
 
 		@Override
@@ -97,16 +122,6 @@ public class MojPanel extends JPanel{
 				snake.setSmjer(snake.getSkreniLijevo());
 				//System.out.println("lijevo");
 			}
-			/*
-			else if (arg0.getExtendedKeyCode() == 40) {
-				snake.setSmjer(Snake.pravac_dolje);
-				//System.out.println("dolje");
-			}
-			else if (arg0.getExtendedKeyCode() == 38) {
-				snake.setSmjer(Snake.pravac_gore);
-				//System.out.println("gore");
-			}
-			*/
 			
 		}
 
@@ -117,7 +132,11 @@ public class MojPanel extends JPanel{
 		}
 		
 	}
-	
+
+	/**
+	 * Implementacija TimerTaska koji vrti igru
+	 * 
+	 */
 	class MojTimerTask extends TimerTask {
 
 		@Override
