@@ -21,6 +21,7 @@ import logika.Snake;
  * @author Almir Handabaka
  *
  */
+
 public class MojPanel extends JPanel{
 	private Snake snake;
 	//private JPanel prikazTabele;
@@ -113,7 +114,7 @@ public class MojPanel extends JPanel{
 		@Override
 		public void keyPressed(KeyEvent arg0) {
 			// TODO Auto-generated method stub
-			System.out.println("keyPressed: " + arg0.getExtendedKeyCode());
+			//System.out.println("keyPressed: " + arg0.getExtendedKeyCode());
 			if (arg0.getExtendedKeyCode() == 39) {
 				snake.setSmjer(snake.getSkreniDesno());
 				//System.out.println("desno");

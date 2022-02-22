@@ -55,7 +55,7 @@ public class IgrajSnake {
 		else if(potez == 6){
 			return snake.skreni_desno;
 		}
-		
+		sc.close();
 		return 5;
 	}
 	
