@@ -84,7 +84,8 @@ public class Snake {
 	private int trajanje_hrane; // hrana nasumicno nestane nakon isteka trajanja hrane
 	
 	/**
-	 * Razlièiti tipovi hrane nose razlièit broj bodova
+	 * Razlièiti tipovi hrane nose razlièit broj bodova i koje maju razlièit efekat
+	 * 
 	 */
 	public Hashtable<String, Integer> hrana;
 	
@@ -105,9 +106,7 @@ public class Snake {
 			}
 		}
 		
-		/* U pocetku igre zmija uvijek krece sa iste pozicije i duzina iznosi 4 polja
-		 *  x = kolona j   y = red i
-		 */
+
 		smjer = PRAVAC_DESNO;
 		kraj = false;
 		bodovi = 0;
@@ -140,39 +139,35 @@ public class Snake {
 	}
 	
 	/**
-	 * Generise prepreke na polju igrice
+	 * Generise prepreke na polju igrice. Broj prepreka se generiše nasumièno do
+	 * nekog MAX_BROJ_PREPREKA koje mu zadamo, dužina svake prepreke je isto 
+	 * nasumièna kao i da li æe biti postavljena horizontalno ili vertikalno
 	 * 
 	 */
 	private void generisiPrepreke() {
 		
-		// pravac_gore, pravac_desno, PRAVAC_DOLJE, pravac_lijevo
 		Random rn = new Random();
 		int broj_prepreka = 1 + rn.nextInt(MAX_BROJ_PREPREKA);
 		int duzina_prepreke;
 		while(broj_prepreka != 0) {
-			//System.out.println("Broj prepreka" + broj_prepreka);
+			
 			broj_prepreka--;
 			duzina_prepreke = 1 + rn.nextInt(MAX_BROJ_PREPREKA);
 			
 			int smjer_prepreke = 0 + rn.nextInt(3);
-			//System.out.println("Smjer prepreke " + smjer_prepreke);
+
 			int pocetak_x = 0 + rn.nextInt(this.n);
 			int pocetak_y = 0 + rn.nextInt(this.n);
 			matricaStanja[pocetak_x][pocetak_y] = OZNAKA_PREPREKA;
 			while(duzina_prepreke > 0) {
-				
 				Pozicija tmp_poz = new Pozicija(pocetak_x,pocetak_y);
 				tmp_poz.pomjeriKoordinate(n, n, smjer_prepreke);
 				pocetak_x = tmp_poz.getI();
 				pocetak_y = tmp_poz.getJ();
 				matricaStanja[pocetak_x][pocetak_y] = OZNAKA_PREPREKA;
 				duzina_prepreke--;
-				//System.out.println("Koordinate "+ pocetak_x + " " +pocetak_y);
 			}
-		}
-		
-		// cistimo pocetni pravac zmije
-		
+		}	
 		
 		
 	}
@@ -196,15 +191,12 @@ public class Snake {
 			}
 		}
 		else if(smjer == PRAVAC_DOLJE) {
-			//i++;
 			i = (i+1)%n;
 		}
 		else if(smjer == PRAVAC_DESNO) {
-			//j++;
 			j = (j+1)%n;
 		}
 		else if(smjer == PRAVAC_LIJEVO) {
-			//j--;
 			if(j - 1 < 0) {
 				j += n-1;
 			}
@@ -213,7 +205,7 @@ public class Snake {
 			}
 		}
 		
-		// boolean daLiJeHrana
+
 		if(daLiJeHrana(i, j)) {
 			pojediHranu();
 			generisiJabuku();
@@ -221,7 +213,6 @@ public class Snake {
 		else if(trajanje_hrane == 0) {
 			generisiJabuku();
 		}
-		// boolean daLiJePrepreka
 		else if(daLiJePrepreka(i,j)) {
 			kraj = true;
 			return;
@@ -253,7 +244,6 @@ public class Snake {
 	 */
 	public void pojediHranu() {
 		bodovi += Math.abs(trenutni_bodovi_hrane);
-		// obrnuti_kontrole = true;
 		if(trenutni_bodovi_hrane == hrana.get("tip_4")) {
 			if(obrnuti_kontrole == true) {
 				obrnuti_kontrole = false;
@@ -326,7 +316,10 @@ public class Snake {
 	
 	
 	/**
-	 * Generišemo hranu
+	 * Generišemo hranu. Ona može biti jedna od 4 tipa hrane. Pojavljuje se na
+	 * nasumiènom mjestu i nasumièno nestaje. Neke hrane æe se èešæe pojavljivati
+	 * od nekih drugih, npr. obièna hrana se pojavljuje najèešæe dok hrana koja
+	 * obræe kontrole lijevo - desno najmanje
 	 * 
 	 */
 	private void generisiJabuku() {
@@ -355,7 +348,6 @@ public class Snake {
 		}
 		else {
 			System.out.println("Generisana obicna hrana");
-			
 			// obicna hrana
 			trenutni_bodovi_hrane = hrana.get("tip_1");
 		}

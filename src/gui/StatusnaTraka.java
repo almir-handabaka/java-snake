@@ -17,9 +17,20 @@ import javax.swing.SwingConstants;
 
 
 public class StatusnaTraka extends JPanel{
+	/**
+	 * JLabel za prikaz rezultat
+	 */
 	public JLabel rezultat;
+	/**
+	 * JLabel za prikaz informacije
+	 */
 	public JLabel informacije;
 	
+	
+	/**
+	 * Konstruktor bez parametara, namješta statusnu traku
+	 * 
+	 */
 	public StatusnaTraka() {
 		setLayout(new GridLayout(1,2));
 		
@@ -35,9 +46,17 @@ public class StatusnaTraka extends JPanel{
 		add(informacije);
 	}
 	
+	/*
+	 *  Updatuje rezultat na statusnoj traci
+	 */
+	
 	public void setRezultat(int rez) {
 		rezultat.setText("Rezultat: " + rez);
 	}
+	
+	/*
+	 *  Updatuje informacije na statusnoj traci
+	 */
 	
 	public void setInformacije(String info) {
 		informacije.setText(info);
