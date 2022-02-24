@@ -58,7 +58,7 @@ public class Pozicija {
 		int i = (int) tacka.getX();
 		int j = (int) tacka.getY();
 		
-		if(smjer == Snake.pravac_gore) {
+		if(smjer == Snake.PRAVAC_GORE) {
 			if(i - 1 < 0) {
 				i += n-1;
 			}
@@ -67,13 +67,13 @@ public class Pozicija {
 			}
 			
 		}
-		else if(smjer == Snake.pravac_dolje) {
+		else if(smjer == Snake.PRAVAC_DOLJE) {
 			i = (i+1)%n;
 		}
-		else if(smjer == Snake.pravac_desno) {
+		else if(smjer == Snake.PRAVAC_DESNO) {
 			j = (j+1)%m;
 		}
-		else if(smjer == Snake.pravac_lijevo) {
+		else if(smjer == Snake.PRAVAC_LIJEVO) {
 			if(j - 1 < 0) {
 				j += m-1;
 			}

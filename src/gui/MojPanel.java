@@ -3,6 +3,7 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Timer;
@@ -24,6 +25,7 @@ import logika.Snake;
 
 public class MojPanel extends JPanel{
 	private Snake snake;
+	private StatusnaTraka traka;
 	//private JPanel prikazTabele;
 	private JButton tabelaDugmadi[][];
 	
@@ -35,19 +37,26 @@ public class MojPanel extends JPanel{
 	 */
 	public MojPanel(int n){
 		snake = new Snake(n);
-		setLayout(new GridLayout(n,n));
+		setLayout(new BorderLayout());
 		tabelaDugmadi = new JButton[n][n];
+		JPanel polje = new JPanel();
+		polje.setLayout(new GridLayout(n,n));
 		for(int i = 0;i<n;i++) {
 			for(int j = 0;j<n;j++) {
 				tabelaDugmadi[i][j] = new JButton();
-				add(tabelaDugmadi[i][j]);
+				//add(tabelaDugmadi[i][j]);
+				polje.add(tabelaDugmadi[i][j]);
 				tabelaDugmadi[i][j].addKeyListener(new MojKeyListener());
 				tabelaDugmadi[i][j].setBackground(getBoja(snake.getVrijednostStanja(i, j)));
-				
 				tabelaDugmadi[i][j].setPreferredSize(new Dimension(30, 30));
 			}
 		}
 		
+		add(polje, BorderLayout.CENTER);
+		
+		traka = new StatusnaTraka();
+		add(traka, BorderLayout.PAGE_END);
+	
 		MojTimerTask mtt = new MojTimerTask();
 		Timer timer = new Timer(true);
 		timer.scheduleAtFixedRate(mtt, 0, 200);
@@ -89,13 +98,10 @@ public class MojPanel extends JPanel{
 	public void osvjeziStanjeTabele() {
 		for(int i = 0;i<tabelaDugmadi.length;i++) {
 			for(int j = 0;j<tabelaDugmadi[0].length;j++) {
-				//System.out.print(snake.getVrijednostStanja(i, j));
 				tabelaDugmadi[i][j].setBackground(getBoja(snake.getVrijednostStanja(i, j)));
 				
 			}
-			//System.out.println();
 		}
-		//System.out.println("-----------------");
 	}
 	
 	/**
@@ -116,11 +122,11 @@ public class MojPanel extends JPanel{
 			// TODO Auto-generated method stub
 			//System.out.println("keyPressed: " + arg0.getExtendedKeyCode());
 			if (arg0.getExtendedKeyCode() == 39) {
-				snake.setSmjer(snake.getSkreniDesno());
+				snake.setSmjer(Snake.SKRENI_DESNO);
 				//System.out.println("desno");
 			}
 			else if (arg0.getExtendedKeyCode() == 37) {
-				snake.setSmjer(snake.getSkreniLijevo());
+				snake.setSmjer(Snake.SKRENI_LIJEVO);
 				//System.out.println("lijevo");
 			}
 			
@@ -144,11 +150,34 @@ public class MojPanel extends JPanel{
 		public void run() {
 			snake.pomjeriZmiju();
 			osvjeziStanjeTabele();
+			traka.setRezultat(snake.getBodove());
+			traka.setInformacije(getVrstaHrane());
 			if (snake.krajIgre()) {
 				cancel();
+				traka.setInformacije("Igra je završena!");
 				System.out.println("KRAJ IGRE");
 			}
 		}
+		
+		
+	}
+	
+	/**
+	 * Vraæa tekst o vrsti hrane koja je trenutno na polju
+	 */
+	
+	public String getVrstaHrane() {
+		if(snake.hrana.get("tip_1") == snake.getTrenutneBodove()) {
+			return "Hrana: obicna hrana";
+		}
+		else if(snake.hrana.get("tip_2") == snake.getTrenutneBodove()) {
+			return "Hrana: poveca duzinu za 3";
+		}
+		else if(snake.hrana.get("tip_3") == snake.getTrenutneBodove()) {
+			return "Hrana: smanji duzinu za 1";
+		}
+		
+		return "Hrana: obrce desno - lijevo kontrole";
 		
 		
 	}

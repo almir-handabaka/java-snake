@@ -18,42 +18,42 @@ public class Snake {
 	 * Smjerovi u kojima se zmija kreæe
 	 */
 	
-	public final static int pravac_dolje = 0;
-	public final static int pravac_lijevo = 1;
-	public final static int pravac_desno = 2;
-	public final static int pravac_gore = 3;
+	public final static int PRAVAC_DOLJE = 0;
+	public final static int PRAVAC_LIJEVO = 1;
+	public final static int PRAVAC_DESNO = 2;
+	public final static int PRAVAC_GORE = 3;
 	
 	/**
 	 * Komande koje menjaju smjer
 	 */
-	public final static int skreni_desno = 0;
-	public final static int skreni_lijevo = 1;
+	public final static int SKRENI_DESNO = 0;
+	public final static int SKRENI_LIJEVO = 1;
 	
 	/**
 	 * Oznaka za prazno polje
 	 */
-	public final static int oznaka_prazno_polje = 0;
+	public final static int OZNAKA_PRAZNO_POLJE = 0;
 	/**
 	 * Oznaka za tijelo zmije
 	 */
-	public final static int oznaka_tijelo_zmije = 1;
+	public final static int OZNAKA_TIJELO_ZMIJE = 1;
 	/**
 	 * Oznaka za hranu
 	 */
-	public final static int oznaka_jabuka = 2;
+	public final static int OZNAKA_JABUKA = 2;
 	/**
 	 * Oznaka za prepreku
 	 */
-	public final static int oznaka_prepreka = 3;
+	public final static int OZNAKA_PREPREKA = 3;
 	
 	/**
 	 * Poèetna dužina zmije
 	 */
-	public final static int pocetna_duzina_zmije = 5;
+	public final static int POCETNA_DUZINA_ZMIJE = 5;
 	/**
 	 * Maximalni broj prepreka koje se mogu random generisati
 	 */
-	public final static int max_broj_prepreka = 5;
+	public final static int MAX_BROJ_PREPREKA = 5;
 	
 	/**
 	 * Matrica stanja polja za igru
@@ -80,13 +80,13 @@ public class Snake {
 	private int bodovi; // totalni bodovi
 	private int trenutni_bodovi_hrane; // koliko hrana na polju nosi bodova
 	private int povecati_tijelo; // tijelo zmije povecavamo za neki broj
-	boolean obrnuti_kontrole; // true za zamjenu desno - lijevo
-	int trajanje_hrane; // hrana nasumicno nestane nakon isteka trajanja hrane
+	private boolean obrnuti_kontrole; // true za zamjenu desno - lijevo
+	private int trajanje_hrane; // hrana nasumicno nestane nakon isteka trajanja hrane
 	
 	/**
 	 * Razlièiti tipovi hrane nose razlièit broj bodova
 	 */
-	public static Hashtable<String, Integer> hrana;
+	public Hashtable<String, Integer> hrana;
 	
 	
 	/**
@@ -101,14 +101,14 @@ public class Snake {
 		matricaStanja = new int[n][n];
 		for(int i = 0;i<n;i++) {
 			for(int j = 0;j<n;j++) {
-				matricaStanja[i][j] = oznaka_prazno_polje;
+				matricaStanja[i][j] = OZNAKA_PRAZNO_POLJE;
 			}
 		}
 		
 		/* U pocetku igre zmija uvijek krece sa iste pozicije i duzina iznosi 4 polja
 		 *  x = kolona j   y = red i
 		 */
-		smjer = pravac_desno;
+		smjer = PRAVAC_DESNO;
 		kraj = false;
 		bodovi = 0;
 		povecati_tijelo = 0;
@@ -125,17 +125,17 @@ public class Snake {
 		generisiPrepreke();
 		
 		for(int i = 0 + 1;i<n;i++) {
-			matricaStanja[n/2][i] = oznaka_prazno_polje;
+			matricaStanja[n/2][i] = OZNAKA_PRAZNO_POLJE;
 		}
 		
 		tijeloZmije = new LinkedList<Pozicija>();
-		for(int i = pocetna_duzina_zmije;i>=0;i--) {
+		for(int i = POCETNA_DUZINA_ZMIJE - 1;i>=0;i--) {
 			tijeloZmije.add(new Pozicija(n/2, i));
-			matricaStanja[n/2][i] = oznaka_tijelo_zmije;
+			matricaStanja[n/2][i] = OZNAKA_TIJELO_ZMIJE;
 		}
 		
 		generisiJabuku();
-		matricaStanja[jabuka.getI()][jabuka.getJ()] = oznaka_jabuka;
+		matricaStanja[jabuka.getI()][jabuka.getJ()] = OZNAKA_JABUKA;
 		
 	}
 	
@@ -145,27 +145,27 @@ public class Snake {
 	 */
 	private void generisiPrepreke() {
 		
-		// pravac_gore, pravac_desno, pravac_dolje, pravac_lijevo
+		// pravac_gore, pravac_desno, PRAVAC_DOLJE, pravac_lijevo
 		Random rn = new Random();
-		int broj_prepreka = 1 + rn.nextInt(max_broj_prepreka);
+		int broj_prepreka = 1 + rn.nextInt(MAX_BROJ_PREPREKA);
 		int duzina_prepreke;
 		while(broj_prepreka != 0) {
 			//System.out.println("Broj prepreka" + broj_prepreka);
 			broj_prepreka--;
-			duzina_prepreke = 1 + rn.nextInt(max_broj_prepreka);
+			duzina_prepreke = 1 + rn.nextInt(MAX_BROJ_PREPREKA);
 			
 			int smjer_prepreke = 0 + rn.nextInt(3);
 			//System.out.println("Smjer prepreke " + smjer_prepreke);
 			int pocetak_x = 0 + rn.nextInt(this.n);
 			int pocetak_y = 0 + rn.nextInt(this.n);
-			matricaStanja[pocetak_x][pocetak_y] = oznaka_prepreka;
+			matricaStanja[pocetak_x][pocetak_y] = OZNAKA_PREPREKA;
 			while(duzina_prepreke > 0) {
 				
 				Pozicija tmp_poz = new Pozicija(pocetak_x,pocetak_y);
 				tmp_poz.pomjeriKoordinate(n, n, smjer_prepreke);
 				pocetak_x = tmp_poz.getI();
 				pocetak_y = tmp_poz.getJ();
-				matricaStanja[pocetak_x][pocetak_y] = oznaka_prepreka;
+				matricaStanja[pocetak_x][pocetak_y] = OZNAKA_PREPREKA;
 				duzina_prepreke--;
 				//System.out.println("Koordinate "+ pocetak_x + " " +pocetak_y);
 			}
@@ -187,7 +187,7 @@ public class Snake {
 		int j = tijeloZmije.getFirst().getJ();
 		
 		
-		if(smjer == pravac_gore) {
+		if(smjer == PRAVAC_GORE) {
 			if(i - 1 < 0) {
 				i += n-1;
 			}
@@ -195,15 +195,15 @@ public class Snake {
 				i = (i-1)%n;
 			}
 		}
-		else if(smjer == pravac_dolje) {
+		else if(smjer == PRAVAC_DOLJE) {
 			//i++;
 			i = (i+1)%n;
 		}
-		else if(smjer == pravac_desno) {
+		else if(smjer == PRAVAC_DESNO) {
 			//j++;
 			j = (j+1)%n;
 		}
-		else if(smjer == pravac_lijevo) {
+		else if(smjer == PRAVAC_LIJEVO) {
 			//j--;
 			if(j - 1 < 0) {
 				j += n-1;
@@ -252,7 +252,7 @@ public class Snake {
 	 * 
 	 */
 	public void pojediHranu() {
-		bodovi += Math.abs(max_broj_prepreka);
+		bodovi += Math.abs(trenutni_bodovi_hrane);
 		// obrnuti_kontrole = true;
 		if(trenutni_bodovi_hrane == hrana.get("tip_4")) {
 			if(obrnuti_kontrole == true) {
@@ -281,7 +281,7 @@ public class Snake {
 	 * 
 	 */
 	boolean daLiJePrepreka(int i, int j) {
-		return (matricaStanja[i][j] == oznaka_tijelo_zmije || matricaStanja[i][j] == oznaka_prepreka);
+		return (matricaStanja[i][j] == OZNAKA_TIJELO_ZMIJE || matricaStanja[i][j] == OZNAKA_PREPREKA);
 	}
 	
 	/**
@@ -308,19 +308,19 @@ public class Snake {
 	public void osvjeziMatricuStanja() {
 		for(int i = 0;i<n;i++) {
 			for(int j = 0;j<n;j++) {
-				if(matricaStanja[i][j] == oznaka_prepreka) {
-					matricaStanja[i][j] = oznaka_prepreka;
+				if(matricaStanja[i][j] == OZNAKA_PREPREKA) {
+					matricaStanja[i][j] = OZNAKA_PREPREKA;
 				}else {
-					matricaStanja[i][j] = oznaka_prazno_polje;
+					matricaStanja[i][j] = OZNAKA_PRAZNO_POLJE;
 				}
 				
 			}
 		}
 		
 		for(int i = 0;i<tijeloZmije.size();i++) {
-			matricaStanja[tijeloZmije.get(i).getI()][tijeloZmije.get(i).getJ()] = oznaka_tijelo_zmije;
+			matricaStanja[tijeloZmije.get(i).getI()][tijeloZmije.get(i).getJ()] = OZNAKA_TIJELO_ZMIJE;
 		}
-		matricaStanja[jabuka.getI()][jabuka.getJ()] = oznaka_jabuka;
+		matricaStanja[jabuka.getI()][jabuka.getJ()] = OZNAKA_JABUKA;
 		
 	}
 	
@@ -367,7 +367,7 @@ public class Snake {
 			i = 0 + rn.nextInt(n);
 			j = 0 + rn.nextInt(n);
 			
-			if(matricaStanja[i][j] == oznaka_prazno_polje) {
+			if(matricaStanja[i][j] == OZNAKA_PRAZNO_POLJE) {
 				jabuka = new Pozicija(i,j);
 				return;
 			}
@@ -384,16 +384,16 @@ public class Snake {
 	public void setSmjer(int smjer_skretanja) {
 		
 		if(obrnuti_kontrole == true) {
-			if(smjer_skretanja == skreni_desno) {
-				smjer_skretanja = skreni_lijevo;
+			if(smjer_skretanja == SKRENI_DESNO) {
+				smjer_skretanja = SKRENI_LIJEVO;
 			}
 			else {
-				smjer_skretanja = skreni_desno;
+				smjer_skretanja = SKRENI_DESNO;
 			}
 		}
 		
 		
-		int smjerovi[] = {pravac_gore, pravac_desno, pravac_dolje, pravac_lijevo};
+		int smjerovi[] = {PRAVAC_GORE, PRAVAC_DESNO, PRAVAC_DOLJE, PRAVAC_LIJEVO};
 		
 		int tmp_index = 0;
 		for(int i = 0;i<smjerovi.length;i++) {
@@ -403,8 +403,7 @@ public class Snake {
 			}
 		}
 		
-		if(smjer_skretanja == skreni_desno) {
-			System.out.println("skreni desno");
+		if(smjer_skretanja == SKRENI_DESNO) {
 			if(tmp_index == smjerovi.length - 1) {
 				tmp_index = 0;
 			}
@@ -413,8 +412,7 @@ public class Snake {
 			}
 		}
 		
-		else if(smjer_skretanja == skreni_lijevo) {
-			System.out.println("skreni lijevo");
+		else if(smjer_skretanja == SKRENI_LIJEVO) {
 			if(tmp_index == 0) {
 				tmp_index = smjerovi.length - 1;
 			}
@@ -466,23 +464,6 @@ public class Snake {
 		return kraj;
 	}
 	
-	/**
-	 * Vraæa varijablu skreni_desno
-	 * 
-	 * @return skreni_desno
-	 */
-	public int getSkreniDesno() {
-		return skreni_desno;
-	}
-	
-	/**
-	 * Vraæa varijablu skreni_lijevo
-	 * 
-	 * @return skreni_lijevo
-	 */
-	public int getSkreniLijevo() {
-		return skreni_lijevo;
-	}
 	
 	/**
 	 * Vraæa koliko trenutna hrana nosi bodova
@@ -492,4 +473,15 @@ public class Snake {
 	public int getTrenutneBodove() {
 		return trenutni_bodovi_hrane;
 	}
+	
+	/**
+	 * Vraæa broj bodova u trenutnoj igri
+	 * 
+	 * @return bodovi
+	 */
+	public int getBodove() {
+		return bodovi;
+	}
+	
+	
 }

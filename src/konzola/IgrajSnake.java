@@ -24,14 +24,14 @@ public class IgrajSnake {
 				"\t6 - desno\n" +
 				"\t5 - ništa\n");
 		Snake snake = new Snake(20);
-		System.out.println(pripremiTabeluStanja(snake.getTrenutnoStanje(), snake));
+		System.out.println(pripremiTabeluStanja(snake.getTrenutnoStanje()));
 		while (!snake.krajIgre()) {
-			int potez = ucitajPotez(snake);
+			int potez = ucitajPotez();
 			if(potez != 5) {
 				snake.setSmjer(potez);
 			}
 			snake.pomjeriZmiju();
-			System.out.println(pripremiTabeluStanja(snake.getTrenutnoStanje(), snake));
+			System.out.println(pripremiTabeluStanja(snake.getTrenutnoStanje()));
 			
 		}
 		System.out.println("Kraj igre!");
@@ -41,21 +41,24 @@ public class IgrajSnake {
 	/**
 	 * Uèita potez od igraèa
 	 */
-	private static int ucitajPotez(Snake snake) {
+	private static int ucitajPotez() {
 		Scanner sc = new Scanner(System.in);
-		int potez = snake.getTrenutniSmjer();
+		int potez = 0;
 		try {
 			potez = sc.nextInt();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		sc.close();
+		
 		if(potez == 4) {
-			return snake.skreni_lijevo;
+			return Snake.SKRENI_LIJEVO;
 		}
 		else if(potez == 6){
-			return snake.skreni_desno;
+			return Snake.SKRENI_DESNO;
 		}
-		sc.close();
+		
 		return 5;
 	}
 	
@@ -63,23 +66,23 @@ public class IgrajSnake {
 	/**
 	 * Priprema trenutnog stanja u polju za igru za ispis igraèu
 	 */
-	private static String pripremiTabeluStanja(int[][] matrica_stanja, Snake snake) {
+	private static String pripremiTabeluStanja(int[][] matrica_stanja) {
 		String stanje = "";
 		
 		
 		for (int i = 0; i < matrica_stanja.length; i++) {
 			//System.out.println(Arrays.toString(vratiTrenutnoStanje[i]));
 			for (int j = 0; j < matrica_stanja[i].length; j++) {
-				if(matrica_stanja[i][j] == snake.oznaka_prazno_polje) {
+				if(matrica_stanja[i][j] == Snake.OZNAKA_PRAZNO_POLJE) {
 					stanje += ". ";
 				}
-				else if(matrica_stanja[i][j] == snake.oznaka_tijelo_zmije) {
+				else if(matrica_stanja[i][j] == Snake.OZNAKA_TIJELO_ZMIJE) {
 					stanje += "- ";
 				}
-				else if(matrica_stanja[i][j] == snake.oznaka_jabuka) {
+				else if(matrica_stanja[i][j] == Snake.OZNAKA_JABUKA) {
 					stanje += "+ ";
 				}
-				else if(matrica_stanja[i][j] == snake.oznaka_prepreka) {
+				else if(matrica_stanja[i][j] == Snake.OZNAKA_PREPREKA) {
 					stanje += "! ";
 				}
 			}
