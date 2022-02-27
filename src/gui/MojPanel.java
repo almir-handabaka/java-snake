@@ -44,7 +44,6 @@ public class MojPanel extends JPanel{
 		for(int i = 0;i<n;i++) {
 			for(int j = 0;j<n;j++) {
 				tabelaDugmadi[i][j] = new JButton();
-				//add(tabelaDugmadi[i][j]);
 				polje.add(tabelaDugmadi[i][j]);
 				tabelaDugmadi[i][j].addKeyListener(new MojKeyListener());
 				tabelaDugmadi[i][j].setBackground(getBoja(snake.getVrijednostStanja(i, j)));
@@ -65,12 +64,14 @@ public class MojPanel extends JPanel{
 	
 	/**
 	 * Vrati boju ovisno od elementa polja
+	 * 
+	 * @param boja vrijednost nekog polja
 	 */
 	private Color getBoja(int boja) {
-		if (boja == 1) {
+		if (boja == Snake.OZNAKA_TIJELO_ZMIJE) {
 			return Color.GREEN;
 		}
-		else if (boja == 2) {
+		else if (boja == Snake.OZNAKA_JABUKA) {
 			if(snake.hrana.get("tip_1") == snake.getTrenutneBodove()) {
 				return Color.PINK;
 			}
@@ -85,14 +86,14 @@ public class MojPanel extends JPanel{
 			}
 			
 		}
-		else if(boja == 3) {
+		else if(boja == Snake.OZNAKA_PREPREKA) {
 			return Color.YELLOW;
 		}
 		return Color.BLACK;
 	}
 	
 	/**
-	 * Osvježi trenutno stanje igre, promjeni boju polja ovisno od stanja
+	 * Osvježi trenutno stanje igre, promjeni boju polja ovisno od vrijednost polja
 	 * 
 	 */
 	public void osvjeziStanjeTabele() {
@@ -164,6 +165,8 @@ public class MojPanel extends JPanel{
 	
 	/**
 	 * Vraæa tekst o vrsti hrane koja je trenutno na polju
+	 * 
+	 * @return String Opis hrane koja je trenutno na polju
 	 */
 	
 	public String getVrstaHrane() {

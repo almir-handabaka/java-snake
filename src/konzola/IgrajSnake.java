@@ -14,7 +14,7 @@ import logika.Snake;
 public class IgrajSnake {
 	
 	/**
-	 * Uèita poteze od igraèa i pokrene igru i ispisuje stanje polja
+	 * Uèita poteze od igraèa, pokrene igru i ispisuje stanje polja
 	 * @param args string args
 	 */
 	
@@ -40,6 +40,8 @@ public class IgrajSnake {
 	
 	/**
 	 * Uèita potez od igraèa
+	 * 
+	 * @return int novi potez
 	 */
 	private static int ucitajPotez() {
 		Scanner sc = new Scanner(System.in);
@@ -50,7 +52,7 @@ public class IgrajSnake {
 			e.printStackTrace();
 		}
 		
-		sc.close();
+		//sc.close();
 		
 		if(potez == 4) {
 			return Snake.SKRENI_LIJEVO;
@@ -65,6 +67,10 @@ public class IgrajSnake {
 	
 	/**
 	 * Priprema trenutnog stanja u polju za igru za ispis igraèu
+	 * 
+	 * @param int[][] matrica_stanja
+	 * 
+	 * @return String string koji predstavlja trenutnu matricu stanja
 	 */
 	private static String pripremiTabeluStanja(int[][] matrica_stanja) {
 		String stanje = "";
@@ -74,17 +80,18 @@ public class IgrajSnake {
 			//System.out.println(Arrays.toString(vratiTrenutnoStanje[i]));
 			for (int j = 0; j < matrica_stanja[i].length; j++) {
 				if(matrica_stanja[i][j] == Snake.OZNAKA_PRAZNO_POLJE) {
-					stanje += ". ";
+					stanje += ".";
 				}
 				else if(matrica_stanja[i][j] == Snake.OZNAKA_TIJELO_ZMIJE) {
-					stanje += "- ";
+					stanje += "*";
 				}
 				else if(matrica_stanja[i][j] == Snake.OZNAKA_JABUKA) {
-					stanje += "+ ";
+					stanje += "0";
 				}
 				else if(matrica_stanja[i][j] == Snake.OZNAKA_PREPREKA) {
-					stanje += "! ";
+					stanje += "!";
 				}
+				stanje += " ";
 			}
 			stanje += "\n";
 		}

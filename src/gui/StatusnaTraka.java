@@ -18,11 +18,11 @@ import javax.swing.SwingConstants;
 
 public class StatusnaTraka extends JPanel{
 	/**
-	 * JLabel za prikaz rezultat
+	 * JLabel za prikaz rezultata
 	 */
 	public JLabel rezultat;
 	/**
-	 * JLabel za prikaz informacije
+	 * JLabel za prikaz informacija
 	 */
 	public JLabel informacije;
 	
@@ -47,7 +47,8 @@ public class StatusnaTraka extends JPanel{
 	}
 	
 	/*
-	 *  Updatuje rezultat na statusnoj traci
+	 *  Seter rezultata na statusnoj traci
+	 *  
 	 */
 	
 	public void setRezultat(int rez) {
@@ -55,7 +56,8 @@ public class StatusnaTraka extends JPanel{
 	}
 	
 	/*
-	 *  Updatuje informacije na statusnoj traci
+	 *  Seter informacija na statusnoj traci
+	 *  
 	 */
 	
 	public void setInformacije(String info) {

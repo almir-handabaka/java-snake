@@ -34,7 +34,7 @@ public class Pozicija {
 	
 	/**
 	 * Vraæa red
-	 * @return red
+	 * @return int red
 	 */
 	public int getI() {
 		return (int) tacka.getX();
@@ -42,7 +42,7 @@ public class Pozicija {
 	
 	/**
 	 * Vraæa kolonu
-	 * @return kolona
+	 * @return int kolona
 	 */
 	public int getJ() {
 		return (int) tacka.getY();
